@@ -24,7 +24,11 @@ public class MainActivity extends AppCompatActivity {
     String root = Environment.getExternalStorageDirectory().toString();
     String usbDirectory = "/storage/usbotg";
     String internalDirectory = "/storage/emulated/0";
-    int countUSB = -1, countInternal = -1;
+    int countUSB = -1;
+    String countInternal =
+
+
+            "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,14 +61,16 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
 
-                    System.out.println("Begin");
+
+                    FileWriter pw = new FileWriter(new File("/storage/emulated/0/HelloIntWorld.txt"),true);
+                    pw.append("text, or filedata");
+                    pw.close();
+
                     /*
+                    System.out.println("Begin");
                     System.out.println("\n\nTHE ROOT: " + root);
                     String str = "\nInternal Hello, World!";
 
-                    FileWriter pw = new FileWriter(new File(internalDirectory + "/HelloIntWorld.txt"),true);
-                    pw.append(str);
-                    pw.close();
 
                     */
                     //Process p = Runtime.getRuntime().exec("cp /storage/emulated/0/QWERTY /storage/usbotg/QWERTY");
@@ -76,6 +82,14 @@ public class MainActivity extends AppCompatActivity {
 p.waitFor();
                     System.out.println("waited: " + p.exitValue());
                     System.out.println("End");
+                    while(p.getErrorStream().available() > 0)
+                    {
+                    System.out.print
+                            ((char)(p.getErrorStream().read()));
+                    }
+                    System.out.println();
+                    countInternal = p.exitValue() + "";
+                    incrementInternalCount();
                 }
                 catch(Exception e){
                     e.printStackTrace();
@@ -89,7 +103,7 @@ p.waitFor();
     }
 
     public void incrementInternalCount(){
-        countInternal++;
-        ((TextView)findViewById(R.id.internalCountView)).setText(Integer.toString(countInternal));
+     //   countInternal++;
+        ((TextView)findViewById(R.id.internalCountView)).setText((countInternal));
     }
 }
